@@ -16,9 +16,19 @@ namespace CRUDusingWebApi.Controllers
             HttpResponseMessage response = client.GetAsync(url).Result;
             if(response.IsSuccessStatusCode)
             {
-                string data = response.Content.ReadAsStringAsync().Result;
-                students = JsonConvert.DeserializeObject<List<Student>>(data);
+                string result = response.Content.ReadAsStringAsync().Result;
+                var data = JsonConvert.DeserializeObject<List<Student>>(result);
+                if(data != null)
+                {
+                    students = data;
+                }
             }
+            return View(students);
+        }
+
+        [HttpGet]
+        public IActionResult create()
+        {
             return View();
         }
     }
