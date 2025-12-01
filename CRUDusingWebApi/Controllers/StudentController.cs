@@ -113,8 +113,9 @@ namespace CRUDusingWebApi.Controllers
             }
             return View(std);
         }
-        [HttpPost]
-        public IActionResult Delete(Student std)
+        [HttpPost,ActionName("Delete")]
+
+        public IActionResult DeleteConfirm(Student std)
         {
            HttpResponseMessage response = client.DeleteAsync(url + std.id).Result; // move the formated text to url to go to api for insertion
             if (response.IsSuccessStatusCode)
