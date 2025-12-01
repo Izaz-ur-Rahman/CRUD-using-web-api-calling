@@ -38,7 +38,10 @@ namespace CRUDusingWebApi.Controllers
             string data = JsonConvert.SerializeObject(std);
             StringContent content = new StringContent(data,Encoding.UTF8,"application/Json"); // convert json into formated text
             HttpResponseMessage response = client.PostAsync(url,content).Result; // move the formated text to url to go to api for insertion
-
+            if (response.IsSuccessStatusCode) { 
+                TempData["msg"] = "Student Inserted.";
+                return RedirectToAction("Index");
+            }
             return View();
         }
     }
