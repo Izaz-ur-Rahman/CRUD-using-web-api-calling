@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Text;
 
 namespace CRUDusingWebApi.Controllers
 {
@@ -29,6 +30,15 @@ namespace CRUDusingWebApi.Controllers
         [HttpGet]
         public IActionResult create()
         {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult create(Student std)
+        {
+            string data = JsonConvert.SerializeObject(std);
+            StringContent content = new StringContent(data,Encoding.UTF8,"application/Json"); // convert json into formated text
+            HttpResponseMessage response = client.PostAsync(url,content).Result; // move the formated text to url to go to api for insertion
+
             return View();
         }
     }
