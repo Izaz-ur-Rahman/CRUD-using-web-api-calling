@@ -63,5 +63,38 @@ namespace CRUDusingWebApi.Controllers
             }
             return View(std);
         }
+
+        [HttpPost]
+        public IActionResult Edit(Student std)
+        {
+            string data = JsonConvert.SerializeObject(std);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/Json"); // convert json into formated text
+            HttpResponseMessage response = client.PutAsync(url + std.id, content).Result; // move the formated text to url to go to api for insertion
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["update_record"] = "Student Updated.";
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            Student std = new Student();
+            HttpResponseMessage response = client.GetAsync(url + id).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string result = response.Content.ReadAsStringAsync().Result;
+                var data = JsonConvert.DeserializeObject<Student>(result);
+                if (data != null)
+                {
+                    std = data;
+                }
+
+            }
+            return View(std);
+        }
+
     }
 }
